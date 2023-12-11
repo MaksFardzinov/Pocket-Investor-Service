@@ -13,17 +13,6 @@ services:
       MYSQL_USER: server
       MYSQL_PASSWORD: 1q2w3e4r
 
-  clickhouse:
-    platform: linux/amd64
-    container_name: clickhouse
-    restart: always
-    image: clickhouse/clickhouse-server:23.7-alpine
-    ports:
-      - "8123:8123"
-      - "9000:9000"
-    volumes:
-      - /var/lib/clickhouse:/var/lib/clickhouse
-
   zookeeper:
     platform: linux/amd64
     container_name: zookeeper
@@ -51,3 +40,16 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  clickhouse:
+    platform: linux/amd64
+    container_name: clickhouse
+    restart: always
+    image: clickhouse/clickhouse-server:23.7-alpine
+    depends_on:
+      - kafka
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - /var/lib/clickhouse:/var/lib/clickhouse

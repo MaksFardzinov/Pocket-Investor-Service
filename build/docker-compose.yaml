@@ -1,17 +1,17 @@
 version: '3.1'
 
 services:
-  mysql:
-    platform: linux/amd64
-    image: mysql:latest
-    restart: always
-    ports:
-      - "3306:3306"
+  postgres:
+    image: postgres
     environment:
-      MYSQL_ROOT_PASSWORD: 1q2w3e4r
-      MYSQL_DATABASE: prod
-      MYSQL_USER: server
-      MYSQL_PASSWORD: 1q2w3e4r
+      POSTGRES_DB: "mobile"
+      POSTGRES_USER: "mobile"
+      POSTGRES_PASSWORD: "1q2w3e4r"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
@@ -61,4 +61,8 @@ services:
       - "8123:8123"
       - "9000:9000"
     volumes:
-      - /var/lib/clickhouse:/var/lib/clickhouse
+      - ch-data:/var/lib/clickhouse
+
+volumes:
+  pg-data:
+  ch-data:

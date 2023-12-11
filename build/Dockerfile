@@ -1,4 +1,4 @@
-FROM ubuntu:latest
-LABEL authors="User"
-
-ENTRYPOINT ["top", "-b"]
+FROM maven
+COPY .. /app
+WORKDIR /app
+RUN mvn spring-boot:run

@@ -39,6 +39,7 @@ public class SecurityConfig  {
                 .authorizeRequests()
                 .requestMatchers("/secured").authenticated()
                 .requestMatchers("/info").authenticated()
+                .requestMatchers("/replenishBalance").authenticated()
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()

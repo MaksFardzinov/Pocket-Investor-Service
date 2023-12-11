@@ -1,4 +1,4 @@
-package com.example.FirstApp.pojo;
+package com.example.FirstApp.pojo.user;
 
 import com.example.FirstApp.models.Role;
 

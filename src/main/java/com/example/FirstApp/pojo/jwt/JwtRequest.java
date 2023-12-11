@@ -1,4 +1,4 @@
-package com.example.FirstApp.pojo;
+package com.example.FirstApp.pojo.jwt;
 public class JwtRequest {
     private String username;
     private String password;

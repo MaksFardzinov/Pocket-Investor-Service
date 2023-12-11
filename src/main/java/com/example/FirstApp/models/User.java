@@ -31,6 +31,8 @@ public class User {
     private String firstname;
     @Column(name ="lastname" )
     private String lastname;
+    @Column(name ="balance")
+    private double balance;
 
 
 
@@ -40,6 +42,12 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Collection<Role> roles;
+    @ManyToMany()
+    @JoinTable(name = "users_stocks",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "stock_id")
+    )
+    private Collection<Stocks> stocks;
 
     public User() {}
     public User( String username,String firstname, String lastname, String email, String password) {
@@ -50,6 +58,13 @@ public class User {
         this.password = password;
     }
 
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 
     public int getUser_id() {
         return id;
@@ -107,4 +122,11 @@ public class User {
         this.roles = roles;
     }
 
+    public Collection<Stocks> getStocks() {
+        return stocks;
+    }
+
+    public void setStocks(Collection<Stocks> stocks) {
+        this.stocks = stocks;
+    }
 }

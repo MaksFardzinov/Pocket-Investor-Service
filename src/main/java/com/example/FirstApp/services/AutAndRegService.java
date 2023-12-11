@@ -2,10 +2,10 @@ package com.example.FirstApp.services;
 
 import com.example.FirstApp.exeptions.AppError;
 import com.example.FirstApp.models.User;
-import com.example.FirstApp.pojo.JwtRequest;
-import com.example.FirstApp.pojo.JwtResponse;
-import com.example.FirstApp.pojo.RegistrationUser;
-import com.example.FirstApp.pojo.UserDto;
+import com.example.FirstApp.pojo.jwt.JwtRequest;
+import com.example.FirstApp.pojo.jwt.JwtResponse;
+import com.example.FirstApp.pojo.user.RegistrationUser;
+import com.example.FirstApp.pojo.user.UserDto;
 import com.example.FirstApp.utils.JwtTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

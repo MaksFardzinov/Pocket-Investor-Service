@@ -1,37 +1,56 @@
 package com.example.FirstApp.controlers;
 
-import lombok.RequiredArgsConstructor;
+import com.example.FirstApp.pojo.stocks.ActionForBuyRequest;
+import com.example.FirstApp.pojo.stocks.StocksResponse;
+import com.example.FirstApp.pojo.user.UsersActionForGetResponse;
+import com.example.FirstApp.services.StockService;
+import com.example.FirstApp.services.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Map;
 
-import static java.lang.System.out;
 
 @RestController
 public class MainController {
-    @GetMapping("/unsecured")
-    public String unsecuredData() {
-        return "Unsecured data";
-    }
-    
-    @GetMapping("/secured")
+    final
+    StockService stockservice;
+    final
+    UserService userService;
 
-    public String securedData() {
-        return "Secured data";
+    public MainController(StockService stockservice, UserService userService) {
+        this.stockservice = stockservice;
+        this.userService = userService;
     }
 
-    @GetMapping("/admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String adminData() {
-        return "Admin data";
-    }
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/info")
-    public StringBuilder userData(Principal principal) {
-        StringBuilder answer = new StringBuilder();
-        answer.append("Имя пользователя: ").append(principal.getName());
-        return answer;
+    public ResponseEntity<Map<String, Object>> userData(Principal principal) {
+      return userService.getInfo(principal);
+    }
+    @PostMapping("/addAction")
+    public String addAction(@RequestBody ActionForBuyRequest actionRequest, Principal principal){
+       return stockservice.addStock(actionRequest,principal);
+    }
+    @GetMapping("/getUserActions")
+    public ResponseEntity<List<UsersActionForGetResponse>> getAllActions(Principal principal){
+
+        return ResponseEntity.ok().body(userService.getAllActions(principal));
+    }
+    @PostMapping("/replenishBalance")
+    public ResponseEntity<?>  replenishBalance(@RequestBody double money, Principal principal){
+        return  userService.replenishBalance(money,principal);
+    }
+    @GetMapping("/getActions")
+    public ResponseEntity<List<StocksResponse>> getActions(){
+
+        return ResponseEntity.ok().body(stockservice.getAllActions());
+    }
+    @PostMapping("/sellAction")
+    public String sellAction(@RequestBody ActionForBuyRequest actionRequest, Principal principal){
+        return stockservice.sellStock(actionRequest,principal);
     }
 }

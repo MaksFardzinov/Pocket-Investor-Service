@@ -3,6 +3,7 @@ package com.example.FirstApp.configs;
 import com.example.FirstApp.utils.JwtTokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response, jakarta.servlet.FilterChain filterChain) throws jakarta.servlet.ServletException, IOException {
+    protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request, @NotNull jakarta.servlet.http.HttpServletResponse response, @NotNull jakarta.servlet.FilterChain filterChain) throws jakarta.servlet.ServletException, IOException {
         String header = request.getHeader("Authorization");
         String username=null;
         String jwt=null;

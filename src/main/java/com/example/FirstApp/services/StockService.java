@@ -86,5 +86,8 @@ public class StockService {
         }
         return actions;
     }
+    public void updatePrice(){
+        repository.updatePrice();
+    }
 
 }

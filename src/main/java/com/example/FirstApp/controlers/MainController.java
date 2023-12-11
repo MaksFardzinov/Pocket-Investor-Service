@@ -53,4 +53,8 @@ public class MainController {
     public String sellAction(@RequestBody ActionForBuyRequest actionRequest, Principal principal){
         return stockservice.sellStock(actionRequest,principal);
     }
+    @PostMapping("/updatePrice")
+    public  void  updatePrice(){
+        stockservice.updatePrice();
+    }
 }

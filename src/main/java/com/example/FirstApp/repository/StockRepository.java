@@ -4,6 +4,8 @@ import com.example.FirstApp.models.ERole;
 import com.example.FirstApp.models.Role;
 import com.example.FirstApp.models.Stocks;
 import com.example.FirstApp.models.UsersStocks;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +18,8 @@ import java.util.Optional;
 public interface StockRepository extends CrudRepository<Stocks, Integer> {
     Stocks findByName(String name);
     Iterable<Stocks> findAll();
+    @Transactional
+    @Modifying
     @Query("UPDATE Stocks \n" +
             "SET price = ROUND(price * (1 + (RAND() - 0.5)), 4)")
     void updatePrice();

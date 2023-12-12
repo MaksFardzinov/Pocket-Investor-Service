@@ -24,23 +24,23 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "22181:2181"
+#    volumes:
+#      - zoo:/var/lib/zookeeper
 
   kafka:
-    container_name: kafka
-    platform: linux/amd64
     image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
     ports:
       - "29092:29092"
-    hostname: kafka
+      - "9092:9092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   kafka-ui:
     container_name: kafka-ui
@@ -51,7 +51,7 @@ services:
     restart: always
     environment:
       - KAFKA_CLUSTERS_0_NAME=local
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
       - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
     links:
       - kafka
@@ -70,17 +70,21 @@ services:
     volumes:
       - ch-data:/var/lib/clickhouse
 
-  server:
-    container_name: server
-    build:
-      context: ../
-      dockerfile: ./build/Dockerfile
-    ports:
-      - "8080:8080"
-    depends_on:
-      - kafka
-      - postgres
+#  server:
+#    container_name: server
+#    build:
+#      context: ../
+#      dockerfile: ./build/Dockerfile
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - kafka
+#      - postgres
+#    volumes:
+#      - broker:/var/lib/kafka
 
 volumes:
   pg-data:
   ch-data:
+#  broker:
+#  zoo:
